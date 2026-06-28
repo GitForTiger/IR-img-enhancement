@@ -126,7 +126,7 @@ The model successfully synthesizes visible-spectrum features while preserving st
 
 | Thermal Input (Magma Colormap) | AI-Reconstructed RGB Output |
 | --- | --- |
-| ![Thermal Input](assets/thermal_input.png) | ![RGB Output](assets/rgb_output.png) |
+| ![Thermal Input](assets/thermal_input.png) | ![RGB Output](assets/RGB_output.png) |
 
 ---
 
@@ -177,7 +177,7 @@ pip install -r requirements.txt
 
 **4. Ensure Weights are Present**
 
-*Note: Due to GitHub file limits, `production_model.pth` may not be included in the repo. Ensure you place the model weights inside the `models/` directory as specified in `config.json`.*
+*Note: Due to GitHub file limits, `production_model.pth` is not included in the repo. Ensure you place the model weights inside the `models/` directory as specified in `config.json`.*
 
 **5. Launch the Dashboard**
 
