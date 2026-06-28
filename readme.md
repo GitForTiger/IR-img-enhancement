@@ -101,7 +101,6 @@ IR-IMG-ENHANCEMENT/
 **Geospatial Processing**
 
 ![Rasterio](https://img.shields.io/badge/Rasterio-GeoTIFF_IO-4C9A2A.svg)
-![GDAL](https://img.shields.io/badge/GDAL-Geospatial-2F6E3D.svg)
 
 **Frontend & Visualization**
 
