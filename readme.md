@@ -188,9 +188,3 @@ streamlit run app.py
 The application will open automatically in your default browser at `http://localhost:8501`.
 
 ---
-
-## 9. 🔭 Future Scope: Semantic Constraints
-
-To fully satisfy the semantic mapping requirements for geospatial analysis, the next iteration of this framework is designed to integrate a **Post-Processing Semantic Mask**.
-
-By utilizing a modular hook in `src/utils.py`, we plan to implement an NDVI (Normalized Difference Vegetation Index) based thresholding tool. This will act as a deterministic lookup table applied *after* GAN generation, explicitly forcing bodies of water to blue and high-density vegetation to green, guaranteeing zero color-hallucination for critical topological features.
