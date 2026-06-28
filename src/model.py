@@ -95,29 +95,35 @@ class GeneratorUNet(nn.Module):
 # OOP PRODUCTION WRAPPER
 
 class SatelliteColorizer:
-    """
-    High-level interface for deploying the GeneratorUNet in production.
-    Abstracts away device mapping, weight loading, and tensor manipulation.
-    """
-    def __init__(self, model_path: str, device: str = None):
-        if device is None:
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        else:
-            self.device = torch.device(device)
-            
+    def __init__(self, config: dict):
+        """
+        Initializes the inference pipeline. 
+        Forces CPU mapping to ensure compatibility across all environments.
+        """
+        # 1. Force the device to CPU to avoid "Torch not compiled with CUDA" errors
+        self.device = torch.device("cpu")
         logger.info(f"Initializing SatelliteColorizer on: {self.device}")
         
-        # Initialize architecture and load pre-trained weights
+        # 2. Load the model architecture
         self.model = GeneratorUNet(in_channels=1, out_channels=3)
+        
+        # 3. Load weights with strict CPU mapping
+        model_path = config.get("model_path")
+        if not model_path:
+            raise ValueError("Configuration dictionary must contain 'model_path'.")
+            
         try:
-            self.model.load_state_dict(torch.load(model_path, map_location=self.device, weights_only=True))
-            logger.info("Successfully loaded production weights.")
+            # map_location='cpu' is the magic fix here
+            state_dict = torch.load(model_path, map_location=torch.device('cpu'), weights_only=True)
+            self.model.load_state_dict(state_dict)
+            self.model.eval() # Set to evaluation mode immediately
+            logger.info(f"Successfully loaded weights from {model_path} to CPU")
         except Exception as e:
-            logger.error(f"Failed to load weights from {model_path}. Error: {e}")
+            logger.error(f"Failed to load weights: {e}")
             raise
             
+        # 4. Finalize setup
         self.model.to(self.device)
-        self.model.eval()
 
     def predict(self, input_tensor: torch.Tensor) -> np.ndarray:
         """

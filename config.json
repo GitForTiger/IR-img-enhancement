@@ -1,0 +1,4 @@
+{
+    "model_path": "models/production_model.pth",
+    "device": "cpu"
+}

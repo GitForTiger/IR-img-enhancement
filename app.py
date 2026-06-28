@@ -5,6 +5,8 @@ from rasterio.io import MemoryFile
 import torch
 import time
 import matplotlib.pyplot as plt
+import json
+import torch.nn.functional as F
 
 # --- Import our custom OOP pipeline ---
 from src import SatelliteColorizer, GlobalSceneNormalizer
@@ -59,12 +61,21 @@ st.markdown(
 # ==========================================
 # 4. LOAD AI PIPELINE (Cached for speed)
 # ==========================================
+@st.cache_data
+def load_config():
+    with open("config.json", "r") as f:
+        return json.load(f)
+
+
 @st.cache_resource(show_spinner=False)
 def load_pipeline():
+    config = load_config()
     try:
-        return SatelliteColorizer("models/production_model.pth")
+        return SatelliteColorizer(
+            config=config
+        )
     except Exception as e:
-        st.error(f"Failed to load model weights. Ensure 'production_model.pth' is in the 'models/' folder. Error: {e}")
+        st.error(f"Error loading model: {e}")
         return None
 
 with st.spinner("Initializing Deep Learning Engine..."):
@@ -93,7 +104,6 @@ if pipeline:
                     ir_array = src.read(1).astype(np.float32)
             
             # --- PREPROCESSING ---
-            import torch.nn.functional as F
             
             normalizer = GlobalSceneNormalizer()
             norm_array = normalizer.fit_transform(ir_array)
