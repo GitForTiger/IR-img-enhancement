@@ -80,6 +80,9 @@ IR-IMG-ENHANCEMENT/
 │   └── production_model.pth    # The active model weights (v1)
 ├── notebooks/
 │   └── modelTraining.ipynb     # Colab training script & data scraping logic
+├── assets/                     # PoW display using sample input-output pair
+│   ├── thermal_input.png       
+│   └── RGB_output.png
 ├── app.py                      # Streamlit Dashboard (Frontend)
 ├── config.json                 # Decoupled deployment settings
 ├── requirements.txt            # Pin-pointed dependency map
